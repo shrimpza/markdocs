@@ -9,12 +9,27 @@
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#doc").load("https://raw.githubusercontent.com/shrimpza/colour-reader/master/README.md");
+			var url = "https://raw.githubusercontent.com/shrimpza/colour-reader/master/README.md";
+			$.getJSON("http://whateverorigin.org/get?url=" + encodeURIComponent(url) + '&callback=?', 
+				function(data) {
+					var tokens = marked.lexer(data.contents);
+					for (var i = 0; i < tokens.length; i++) {
+						if (tokens[i].type == 'heading') {
+							console.log(tokens[i]);
+							$("#toc").append($("<h" + tokens[i].depth + "/>")
+										.append($("<a/>").attr("href", "#" + tokens[i].text.toLowerCase().replace(/[^\w]+/g, '-'))
+											.text(tokens[i].text))
+							);
+						}
+					};
+					$("#doc").html(marked(data.contents));
+				}
+			);
 		});
 	</script>
 </head>
 <body>
-	<h1>hello world</h1>
+	<div id="toc"></div>
 	<div id="doc"></div>
 </body>
 </html>
