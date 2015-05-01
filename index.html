@@ -19,9 +19,20 @@
 				$(".main.menu .header").text(data.title);
 
 				mdoc = new MDoc(data).load(function(m) {
-					console.log(m);
+					$.each(m.index.contents, function(i, grp) {
+						$("#toc").append($("<div/>").addClass("header item").text(grp.group));
 
-					$("#doc").html(marked(m.index.contents[0].contents[0].document));
+						$.each(grp.contents, function(d, doc) {
+							var docHead = $("<div/>").addClass("item").text(doc.title);
+							var docMenu = $("<div/>").addClass("menu");
+							docHead.append(docMenu);
+							$("#toc").append(docHead);
+
+							$.each(doc.toc, function(t, toc) {
+								docMenu.append($("<a/>").addClass("item").attr("href", "#" + toc.slug).text(toc.title));
+							});
+						});
+					});
 
 					$(".ui.sticky").sticky({
 						context: "#doc"
@@ -39,7 +50,7 @@
 	</div>
 	<div class="main container">
 		<div class="ui right rail">
-			<div id="toc" class="ui sticky vertical menu"><div class="header item">hello</div></div>
+			<div id="toc" class="ui sticky vertical menu"></div>
 		</div>
 		<div id="doc"></div>
 	</div>
