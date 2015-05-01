@@ -6,7 +6,9 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
 
 	<script type="text/javascript" src="mdoc.js"></script>
+	<script type="text/javascript" src="semantic-ui/semantic.min.js"></script>
 
+	<link rel="stylesheet" href="semantic-ui/semantic.min.css">
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript">
@@ -14,32 +16,32 @@
 			var mdoc = {};
 
 			$.getJSON("index.json", function(data) {
+				$(".main.menu .header").text(data.title);
+
 				mdoc = new MDoc(data).load(function(m) {
 					console.log(m);
+
+					$("#doc").html(marked(m.index.contents[0].contents[0].document));
+
+					$(".ui.sticky").sticky({
+						context: "#doc"
+					});
 				});
 			});
-
-			/*var url = "https://raw.githubusercontent.com/shrimpza/colour-reader/master/README.md";
-			$.getJSON("http://whateverorigin.org/get?url=" + encodeURIComponent(url) + '&callback=?', 
-				function(data) {
-					var tokens = marked.lexer(data.contents);
-					for (var i = 0; i < tokens.length; i++) {
-						if (tokens[i].type == 'heading') {
-							console.log(tokens[i]);
-							$("#toc").append($("<h" + tokens[i].depth + "/>")
-										.append($("<a/>").attr("href", "#" + tokens[i].text.toLowerCase().replace(/[^\w]+/g, '-'))
-											.text(tokens[i].text))
-							);
-						}
-					};
-					$("#doc").html(marked(data.contents));
-				}
-			);*/
 		});
 	</script>
 </head>
 <body>
-	<div id="toc"></div>
-	<div id="doc"></div>
+	<div class="ui inverted main menu">
+		<div class="container">
+			<h2 class="ui inverted header">mdoc</h2>
+		</div>
+	</div>
+	<div class="main container">
+		<div class="ui right rail">
+			<div id="toc" class="ui sticky vertical menu"><div class="header item">hello</div></div>
+		</div>
+		<div id="doc"></div>
+	</div>
 </body>
 </html>

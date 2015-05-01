@@ -1,0 +1,16 @@
+.container {
+	position: relative;
+	width: 600px;
+	margin: 0px auto;
+}
+
+.main.container {
+	position: relative;
+	font-size: 1.1em;
+	margin: 20px auto;
+}
+
+.main.menu {
+	margin: 0px;
+	padding: 20px;
+}

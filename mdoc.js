@@ -15,7 +15,7 @@ MDoc = function(index) {
 
 				$.getJSON(content.url, 
 					function(data) {
-						content.document = data;
+						content.document = data.contents;
 						content.toc = [];
 
 						var tokens = marked.lexer(data.contents);
