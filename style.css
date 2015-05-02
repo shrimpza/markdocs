@@ -47,3 +47,7 @@
 .item.toc-5-deep {
 	padding-left: 3.0rem !important;
 }
+
+code {
+	background-color: #FAF9FA;
+}
