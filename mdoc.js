@@ -54,4 +54,10 @@ MDoc = function(index) {
 
 		return this;
 	}
+
+	this.navigate = function(page, section, renderTarget, onDone) {
+		renderTarget.html(marked(page.document));
+
+		if (onDone != null) onDone();
+	}
 }

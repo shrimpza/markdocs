@@ -29,7 +29,10 @@
 							$("#toc").append(docHead);
 
 							$.each(doc.toc, function(t, toc) {
-								docMenu.append($("<a/>").addClass("item").attr("href", "#" + toc.slug).text(toc.title));
+								docMenu.append($("<a/>").addClass("item").attr("href", "#" + toc.slug).text(toc.title))
+								.click(function() {
+									mdoc.navigate(doc, toc, $("#doc"));
+								});
 							});
 						});
 					});
@@ -49,8 +52,8 @@
 		</div>
 	</div>
 	<div class="main container">
-		<div class="ui right rail">
-			<div id="toc" class="ui sticky vertical menu"></div>
+		<div class="ui right very close rail">
+			<div id="toc" class="ui sticky fluid vertical menu"></div>
 		</div>
 		<div id="doc"></div>
 	</div>
