@@ -23,13 +23,15 @@
 						$("#toc").append($("<div/>").addClass("header item").text(grp.group));
 
 						$.each(grp.contents, function(d, doc) {
-							var docHead = $("<div/>").addClass("item").text(doc.title);
+							var docHead = $("<div/>").addClass("item");
 							var docMenu = $("<div/>").addClass("menu");
 							docHead.append(docMenu);
 							$("#toc").append(docHead);
 
 							$.each(doc.toc, function(t, toc) {
-								docMenu.append($("<a/>").addClass("item").attr("href", "#" + toc.slug).text(toc.title))
+								docMenu.append($("<a/>").addClass("item toc-" + toc.depth + "-deep")
+									.attr("href", "#" + toc.slug)
+									.text(toc.title))
 								.click(function() {
 									mdoc.navigate(doc, toc, $("#doc"));
 								});
