@@ -10,6 +10,10 @@
 					"depth": 3
 				},
 				{
+					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Fzomb%2Fmaster%2FREADME.md&callback=?",
+					"depth": 3
+				},
+				{
 					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Funits-api%2Fmaster%2FREADME.md&callback=?",
 					"depth": 2
 				}

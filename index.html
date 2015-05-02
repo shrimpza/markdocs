@@ -27,11 +27,11 @@
 
 						$.each(grp.contents, function(d, doc) {
 							var index = i.toString() + "_" + d.toString();
-							var pageRenderer = pageRenderer(index, doc.depth);
+							var renderer = pageRenderer(index, 2);
 
-							var docDiv = $("<div/>").addClass("ui basic segment")
+							var docDiv = $("<div/>").addClass("ui segment")
 											//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
-											.append(marked(doc.document, { renderer: pageRenderer }))
+											.append(marked(doc.document, { renderer: renderer }))
 											.append($("<div/>").addClass("ui hidden divider"));
 
 							$("#doc").append(docDiv);
@@ -66,11 +66,26 @@
 			var renderer = new marked.Renderer();
 			renderer._index = index;
 
-			renderer.heading = function (text, level) {
+			renderer.heading = function(text, level) {
 				var slug = text.toLowerCase().replace(/[^\w]+/g, '-');
 				var cssClass = level <= dividingLevel ? "class='ui dividing header'" : "";
 				return "<h" + level + " id='" + this._index + "_" + slug + "' " + cssClass + ">" + text + "</h" + level + ">";
-			}
+			};
+
+			renderer.code = function(code, lang, escaped) {
+				if (!lang) {
+					return '<pre class="ui secondary segment"><code>'
+						+ code
+						+ '\n</code></pre>';
+				}
+					
+				return '<pre class="ui secondary segment"><code class="'
+					+ this.options.langPrefix + lang
+					+ '">'
+					+ code
+					+ '\n</code></pre>\n';
+			};
+
 			return renderer;
 		}
 
