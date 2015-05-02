@@ -19,22 +19,32 @@
 				$(".main.menu .header").text(data.title);
 
 				mdoc = new MDoc(data).load(function(m) {
+					$("#doc").empty();
+					$("#toc").empty();
+
 					$.each(m.index.contents, function(i, grp) {
 						$("#toc").append($("<div/>").addClass("header item").text(grp.group));
 
 						$.each(grp.contents, function(d, doc) {
-							var docHead = $("<div/>").addClass("item");
-							var docMenu = $("<div/>").addClass("menu");
-							docHead.append(docMenu);
-							$("#toc").append(docHead);
+							var index = i.toString() + "_" + d.toString();
+							var pageRenderer = pageRenderer(index, doc.depth);
+
+							var docDiv = $("<div/>").addClass("ui basic segment")
+											//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
+											.append(marked(doc.document, { renderer: pageRenderer }))
+											.append($("<div/>").addClass("ui hidden divider"));
+
+							$("#doc").append(docDiv);
+
+							var tocHead = $("<div/>").addClass("item");
+							var tocMenu = $("<div/>").addClass("menu");
+							tocHead.append(tocMenu);
+							$("#toc").append(tocHead);
 
 							$.each(doc.toc, function(t, toc) {
-								docMenu.append($("<a/>").addClass("item toc-" + toc.depth + "-deep")
-									.attr("href", "#" + toc.slug)
-									.text(toc.title))
-								.click(function() {
-									mdoc.navigate(doc, toc, $("#doc"));
-								});
+								tocMenu.append($("<a/>").addClass("item toc-" + toc.depth + "-deep")
+									.attr("href", "#" + index + "_" + toc.slug)
+									.text(toc.title));
 							});
 						});
 					});
@@ -45,6 +55,25 @@
 				});
 			});
 		});
+
+		/**
+		 * Create a marked renderer with custom header renderer, used
+		 * to ensure that we generate unique section ids for linking.
+		 * Also, heading levels below dividingLevel will be set as 
+		 * dividers.
+		 */
+		pageRenderer = function(index, dividingLevel) {
+			var renderer = new marked.Renderer();
+			renderer._index = index;
+
+			renderer.heading = function (text, level) {
+				var slug = text.toLowerCase().replace(/[^\w]+/g, '-');
+				var cssClass = level <= dividingLevel ? "class='ui dividing header'" : "";
+				return "<h" + level + " id='" + this._index + "_" + slug + "' " + cssClass + ">" + text + "</h" + level + ">";
+			}
+			return renderer;
+		}
+
 	</script>
 </head>
 <body>
@@ -55,9 +84,13 @@
 	</div>
 	<div class="main container">
 		<div class="ui right very close rail">
-			<div id="toc" class="ui sticky fluid vertical menu"></div>
+			<div id="toc" class="ui sticky vertical menu"></div>
 		</div>
-		<div id="doc"></div>
+		<div id="doc">
+			<div class="ui active inverted dimmer">
+    			<div class="ui large text loader">Loading</div>
+  			</div>
+  		</div>
 	</div>
 </body>
 </html>

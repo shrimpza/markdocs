@@ -1,6 +1,10 @@
 MDoc = function(index) {
 	this.index = index;
 
+	/**
+	 * Load the contents of the index for this MDoc instance, and 
+	 * call the onDone callback once complete.
+	 */
 	this.load = function(onDone) {
 		// remember who we are, since "this" gets lost within callbacks
 		var _mdoc = this;
@@ -55,6 +59,9 @@ MDoc = function(index) {
 		return this;
 	}
 
+	/**
+	 * load a document into the renderTarget, can call onDone if present
+	 */
 	this.navigate = function(page, section, renderTarget, onDone) {
 		renderTarget.html(marked(page.document));
 
