@@ -68,22 +68,21 @@
 
 			renderer.heading = function(text, level) {
 				var slug = text.toLowerCase().replace(/[^\w]+/g, '-');
-				var cssClass = level <= dividingLevel ? "class='ui dividing header'" : "";
-				return "<h" + level + " id='" + this._index + "_" + slug + "' " + cssClass + ">" + text + "</h" + level + ">";
+				return $("<div/>")
+						.append($("<h" + level + "/>")
+							.attr("id", this._index + "_" + slug)
+							.addClass(dividingLevel ? "ui dividing header" : "")
+							.text(text)
+						).html();
 			};
 
 			renderer.code = function(code, lang, escaped) {
-				if (!lang) {
-					return '<pre class="ui secondary segment"><code>'
-						+ code
-						+ '\n</code></pre>';
-				}
-					
-				return '<pre class="ui secondary segment"><code class="'
-					+ this.options.langPrefix + lang
-					+ '">'
-					+ code
-					+ '\n</code></pre>\n';
+				return $("<div/>")
+						.append($("<pre/>").addClass("ui secondary segment")
+							.append($("<code/>")
+								.addClass(lang ? this.options.langPrefix + lang : "")
+								.text(code))
+						).html();
 			};
 
 			return renderer;

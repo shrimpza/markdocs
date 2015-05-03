@@ -57,3 +57,7 @@
 code {
 	background-color: #FAF9FA;
 }
+
+pre code {
+	font-size: 0.8em;
+}
