@@ -5,6 +5,12 @@
 	margin: 0px auto;
 }
 
+@media (min-width: 1000px) {
+	.container {
+		left: -100px;
+	}
+}	
+
 .main.container {
 	position: relative;
 	font-size: 1.1em;
