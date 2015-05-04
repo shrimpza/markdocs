@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>mdoc</title>
+	<title>markdocs</title>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
@@ -16,6 +16,7 @@
 			var mdoc = {};
 
 			$.getJSON("index.json", function(data) {
+				$("title").text(data.title + " - " + $("title").text());
 				$(".main.menu .header").text(data.title);
 
 				mdoc = new MDoc(data).load(function(m) {
@@ -29,12 +30,9 @@
 							var index = i.toString() + "_" + d.toString();
 							var renderer = pageRenderer(index, 2);
 
-							var docDiv = $("<div/>").addClass("ui segment")
-											//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
-											.append(marked(doc.document, { renderer: renderer }))
-											.append($("<div/>").addClass("ui hidden divider"));
-
-							$("#doc").append(docDiv);
+							if (m.index.showAll || $("#doc").children().length == 0) {
+								showDoc(false, doc, $("#doc"), renderer);
+							}
 
 							var tocHead = $("<div/>").addClass("item");
 							var tocMenu = $("<div/>").addClass("menu");
@@ -42,9 +40,17 @@
 							$("#toc").append(tocHead);
 
 							$.each(doc.toc, function(t, toc) {
-								tocMenu.append($("<a/>").addClass("item toc-" + toc.depth + "-deep")
+								var menuItem = $("<a/>").addClass("item toc-" + toc.depth + "-deep")
 									.attr("href", "#" + index + "_" + toc.slug)
-									.text(toc.title));
+									.text(toc.title);
+
+								if (!m.index.showAll) {
+									menuItem.click(function() {
+										showDoc(true, doc, $("#doc"), renderer);
+									});
+								}
+
+								tocMenu.append(menuItem);
 							});
 						});
 					});
@@ -55,6 +61,17 @@
 				});
 			});
 		});
+
+		showDoc = function(clear, doc, renderTarget, renderer) {
+			if (clear) renderTarget.empty();
+
+			var docDiv = $("<div/>").addClass("ui segment")
+				//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
+				.append(marked(doc.document, { renderer: renderer }))
+				.append($("<div/>").addClass("ui hidden divider"));
+
+			renderTarget.append(docDiv);
+		}
 
 		/**
 		 * Create a marked renderer with custom header renderer, used
