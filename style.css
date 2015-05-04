@@ -31,6 +31,10 @@
 	min-width: 300px;
 }
 
+#toc a.active {
+	box-shadow: 2px 0px 0px inset !important;
+}
+
 .item.toc-1-deep {
 	font-weight: bold;
 	font-size: 1.0em !important;
