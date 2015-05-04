@@ -1,4 +1,91 @@
-MDoc = function(index) {
+MDView = function(docTarget, tocTarget) {
+	this.docTarget = docTarget;
+	this.tocTarget = tocTarget;
+
+	this.buildView = function(loader) {
+		$("#doc").empty();
+		$("#toc").empty();
+
+		var _this = this;
+
+		$.each(loader.index.contents, function(i, grp) {
+			_this.tocTarget.append($("<div/>").addClass("header item").text(grp.group));
+
+			$.each(grp.contents, function(d, doc) {
+				var index = i.toString() + "_" + d.toString();
+				var renderer = _this.pageRenderer(index, 2);
+
+				if (loader.index.showAll || _this.docTarget.children().length == 0) {
+					_this.showDoc(false, doc, renderer);
+				}
+
+				var tocHead = $("<div/>").addClass("item");
+				var tocMenu = $("<div/>").addClass("menu");
+				tocHead.append(tocMenu);
+				_this.tocTarget.append(tocHead);
+
+				$.each(doc.toc, function(t, toc) {
+					var menuItem = $("<a/>").addClass("item toc-" + toc.depth + "-deep")
+						.attr("href", "#" + index + "_" + toc.slug)
+						.text(toc.title);
+
+					if (!loader.index.showAll) {
+						menuItem.click(function() {
+							_this.showDoc(true, doc, renderer);
+						});
+					}
+
+					tocMenu.append(menuItem);
+				});
+			});
+		});
+	}
+
+	this.showDoc = function(clear, doc, renderer) {
+		if (clear) this.docTarget.empty();
+
+		var docDiv = $("<div/>").addClass("ui segment")
+			//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
+			.append(marked(doc.document, { renderer: renderer }))
+			.append($("<div/>").addClass("ui hidden divider"));
+
+		this.docTarget.append(docDiv);
+	}
+
+	/**
+	 * Create a marked renderer with custom header renderer, used
+	 * to ensure that we generate unique section ids for linking.
+	 * Also, heading levels below dividingLevel will be set as 
+	 * dividers.
+	 */
+	this.pageRenderer = function(index, dividingLevel) {
+		var renderer = new marked.Renderer();
+		renderer._index = index;
+
+		renderer.heading = function(text, level) {
+			var slug = text.toLowerCase().replace(/[^\w]+/g, '-');
+			return $("<div/>")
+					.append($("<h" + level + "/>")
+						.attr("id", this._index + "_" + slug)
+						.addClass(dividingLevel ? "ui dividing header" : "")
+						.text(text)
+					).html();
+		};
+
+		renderer.code = function(code, lang, escaped) {
+			return $("<div/>")
+					.append($("<pre/>").addClass("ui secondary segment")
+						.append($("<code/>")
+							.addClass(lang ? this.options.langPrefix + lang : "")
+							.text(code))
+					).html();
+		};
+
+		return renderer;
+	}
+}
+
+MDLoader = function(index) {
 	this.index = index;
 
 	/**
@@ -7,7 +94,7 @@ MDoc = function(index) {
 	 */
 	this.load = function(onDone) {
 		// remember who we are, since "this" gets lost within callbacks
-		var _mdoc = this;
+		var _this = this;
 
 		// keep track of number of documents requested so we can trigger a done event later
 		var _expected = 0;
@@ -48,7 +135,7 @@ MDoc = function(index) {
 
 						// once everything is collected, trigger onDone callback
 						if (_expected == 0) {
-							onDone(_mdoc);
+							onDone(_this);
 						}
 					}
 				)
@@ -57,14 +144,5 @@ MDoc = function(index) {
 		});
 
 		return this;
-	}
-
-	/**
-	 * load a document into the renderTarget, can call onDone if present
-	 */
-	this.navigate = function(page, section, renderTarget, onDone) {
-		renderTarget.html(marked(page.document));
-
-		if (onDone != null) onDone();
 	}
 }

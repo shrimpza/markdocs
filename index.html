@@ -19,41 +19,9 @@
 				$("title").text(data.title + " - " + $("title").text());
 				$(".main.menu .header").text(data.title);
 
-				mdoc = new MDoc(data).load(function(m) {
-					$("#doc").empty();
-					$("#toc").empty();
-
-					$.each(m.index.contents, function(i, grp) {
-						$("#toc").append($("<div/>").addClass("header item").text(grp.group));
-
-						$.each(grp.contents, function(d, doc) {
-							var index = i.toString() + "_" + d.toString();
-							var renderer = pageRenderer(index, 2);
-
-							if (m.index.showAll || $("#doc").children().length == 0) {
-								showDoc(false, doc, $("#doc"), renderer);
-							}
-
-							var tocHead = $("<div/>").addClass("item");
-							var tocMenu = $("<div/>").addClass("menu");
-							tocHead.append(tocMenu);
-							$("#toc").append(tocHead);
-
-							$.each(doc.toc, function(t, toc) {
-								var menuItem = $("<a/>").addClass("item toc-" + toc.depth + "-deep")
-									.attr("href", "#" + index + "_" + toc.slug)
-									.text(toc.title);
-
-								if (!m.index.showAll) {
-									menuItem.click(function() {
-										showDoc(true, doc, $("#doc"), renderer);
-									});
-								}
-
-								tocMenu.append(menuItem);
-							});
-						});
-					});
+				view = new MDView($("#doc"), $("#toc"));
+				loader = new MDLoader(data).load(function() {
+					view.buildView(loader);
 
 					$(".ui.sticky").sticky({
 						context: "#doc"
@@ -61,50 +29,6 @@
 				});
 			});
 		});
-
-		showDoc = function(clear, doc, renderTarget, renderer) {
-			if (clear) renderTarget.empty();
-
-			var docDiv = $("<div/>").addClass("ui segment")
-				//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
-				.append(marked(doc.document, { renderer: renderer }))
-				.append($("<div/>").addClass("ui hidden divider"));
-
-			renderTarget.append(docDiv);
-		}
-
-		/**
-		 * Create a marked renderer with custom header renderer, used
-		 * to ensure that we generate unique section ids for linking.
-		 * Also, heading levels below dividingLevel will be set as 
-		 * dividers.
-		 */
-		pageRenderer = function(index, dividingLevel) {
-			var renderer = new marked.Renderer();
-			renderer._index = index;
-
-			renderer.heading = function(text, level) {
-				var slug = text.toLowerCase().replace(/[^\w]+/g, '-');
-				return $("<div/>")
-						.append($("<h" + level + "/>")
-							.attr("id", this._index + "_" + slug)
-							.addClass(dividingLevel ? "ui dividing header" : "")
-							.text(text)
-						).html();
-			};
-
-			renderer.code = function(code, lang, escaped) {
-				return $("<div/>")
-						.append($("<pre/>").addClass("ui secondary segment")
-							.append($("<code/>")
-								.addClass(lang ? this.options.langPrefix + lang : "")
-								.text(code))
-						).html();
-			};
-
-			return renderer;
-		}
-
 	</script>
 </head>
 <body>
