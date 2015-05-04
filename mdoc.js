@@ -8,7 +8,7 @@ MDView = function(docTarget, tocTarget) {
 
 		var _this = this;
 
-		$.each(loader.index.contents, function(i, grp) {
+		$.each(loader.index.groups, function(i, grp) {
 			_this.tocTarget.append($("<div/>").addClass("header item").text(grp.group));
 
 			$.each(grp.contents, function(d, doc) {
@@ -99,7 +99,7 @@ MDLoader = function(index) {
 		// keep track of number of documents requested so we can trigger a done event later
 		var _expected = 0;
 
-		$.each(this.index.contents, function(i, group) {
+		$.each(this.index.groups, function(i, group) {
 			_expected += group.contents.length;
 
 			$.each(group.contents, function(c, content) {

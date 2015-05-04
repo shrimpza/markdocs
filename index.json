@@ -1,7 +1,7 @@
 {
 	"title": "Random Test Documentation",
 	"showAll": false,
-	"contents": [
+	"groups": [
 		{
 			"group": "Markdocs",
 			"contents": [

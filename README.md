@@ -20,7 +20,7 @@ Here is the content from a simple `index.json`:
 {
   "title": "Documentation Collection",
   "showAll": false,
-  "contents": [
+  "groups": [
     {
       "group": "Markdocs",
       "contents": [
@@ -55,18 +55,18 @@ Here is the content from a simple `index.json`:
  - Overall page title.
 - **`showAll`**
  - If true, all documents specified in the index will be added to the page at startup, rather than on demand when clicked - this can be useful for contineuous reading.
-- **`contents[]`**
+- **`groups[]`**
  - Array of `group` objects which make up the document index.
-- **`contents[].group`**
+- **`groups[].group`**
  - Group heading/title - used to organise the table of contents into groups.
-- **`contents[].contents[]`**
+- **`groups[].contents[]`**
  - Array of document objects, each representing a Markdown document.
-- **`contents[].contents[].title`**
+- **`groups[].contents[].title`**
  - Optionally, a document title. Typically, the title will be defived from the first heading of the document.
-- **`contents[].contents[].url`**
+- **`groups[].contents[].url`**
  - URL of the Markdown document to include. Can be any format, local or remote. Same-origin restrictions apply, so a suitable "proxy" service or script may be required perform cross-domain requests.
-- **`contents[].contents[].depth`**
+- **`groups[].contents[].depth`**
  - Specify the heading level that will be linked to in the table of contents.
-- **`contents[].contents[].dataType`**
+- **`groups[].contents[].dataType`**
  - Optionally, if using a "proxy" service or script which requires it, specify the expected content type.
 
