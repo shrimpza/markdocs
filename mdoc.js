@@ -104,12 +104,17 @@ MDLoader = function(index) {
 
 			$.each(group.contents, function(c, content) {
 
-				$.getJSON(content.url, 
-					function(data) {
-						content.document = data.contents;
+				$.ajax({
+						url: content.url,
+						dataType: content.dataType ? content.dataType : "text"
+					})
+					.success(function(data) {
+						if (data.contents) data = data.contents;
+
+						content.document = data;
 						content.toc = [];
 
-						var tokens = marked.lexer(data.contents);
+						var tokens = marked.lexer(data);
 						for (var i = 0; i < tokens.length; i++) {
 
 							// use headings to build a TOC
@@ -130,15 +135,24 @@ MDLoader = function(index) {
 								}
 							}
 						}
-
+					})
+					.fail(function(req, status, err) {
+						var title = content.title ? content.title : "Unknown Document";
+						content.document = "# " + title + " \n\n **Failed to load document**" + (err ? ":\n\n" + err : "");
+						content.toc = [{
+							title: title,
+							slug: title.toLowerCase().replace(/[^\w]+/g, '-'),
+							depth: 1
+						}];
+					})
+					.always(function() {
 						_expected --;
 
 						// once everything is collected, trigger onDone callback
 						if (_expected == 0) {
 							onDone(_this);
 						}
-					}
-				)
+					});
 			});
 
 		});
