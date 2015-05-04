@@ -34,7 +34,7 @@ Here is the content from a simple `index.json`:
       "group": "Something Else",
       "contents": [
         {
-          "title": "Some Project"
+          "title": "Some Project",
           "url": "http://example.tld/project.md",
           "depth": 2
         },
