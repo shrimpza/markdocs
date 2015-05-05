@@ -1,5 +1,5 @@
 {
-	"title": "Random Test Documentation",
+	"title": "Markdocs",
 	"showAll": false,
 	"groups": [
 		{
@@ -10,37 +10,6 @@
 					"depth": 3
 				}
 			]
-		},
-		{
-			"group": "Shrimp's GitHub",
-			"contents": [
-				{
-					"title": "Colour Reader",
-					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Fcolour-reader%2Fmaster%2FREADME.md&callback=?",
-					"depth": 3,
-					"dataType": "json"
-				},
-				{
-					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Funits-api%2Fmaster%2FREADME.md&callback=?",
-					"depth": 2,
-					"dataType": "json"
-				}
-			]
-		},
-		{
-			"group": "ZOMB",
-			"contents": [
-				{
-					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Fzomb%2Fmaster%2FREADME.md&callback=?",
-					"depth": 3,
-					"dataType": "json"
-				},
-				{
-					"url": "http://whateverorigin.org/get?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshrimpza%2Fzomb-cli%2Fmaster%2FREADME.md&callback=?",
-					"depth": 2,
-					"dataType": "json"
-				}
-			]
-		}		
+		}	
 	]
 }
