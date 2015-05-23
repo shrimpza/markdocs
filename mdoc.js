@@ -83,11 +83,18 @@ MDView = function(docTarget, tocTarget) {
 		if (clear) this.docTarget.empty();
 
 		var docDiv = $("<div/>").addClass("ui segment")
+			.append($("<div/>").addClass("links")
+				.append($("<i/>").addClass("linkify icon").attr("title", "Document Source"))
+				.append($("<i/>").addClass("edit icon").attr("title", "Edit Document")))
 			//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
-			.append(marked(doc.document, { renderer: renderer }))
+			.append(this.getDoc(doc, renderer))
 			.append($("<div/>").addClass("ui hidden divider"));
 
 		this.docTarget.append(docDiv);
+	}
+
+	this.getDoc = function(doc, renderer) {
+		return $("<div/>").html(marked(doc.document, { renderer: renderer }));
 	}
 
 	/**
