@@ -6,6 +6,8 @@ No pre-building, rendering or compiling of the documentation or indeces is requi
 
 The only preparation that's required is the definition of a small JSON index file, which determines which documents to include.
 
+An [example of Markdocs showing this README document](https://shrimpza.github.io/markdocs/) is available.
+
 ## Usage
 
 Download or clone the [Markdocs Git repository](https://github.com/shrimpza/markdocs), and make it available via an HTTP service.
