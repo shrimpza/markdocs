@@ -82,12 +82,31 @@ MDView = function(docTarget, tocTarget) {
 	this.showDoc = function(clear, doc, renderer) {
 		if (clear) this.docTarget.empty();
 
+		var links = $("<div/>").addClass("links");
+		if (doc.editUrl) {
+			links.append($("<a/>").attr("href", doc.editUrl).attr("title", "Edit Document")
+				.append($("<i/>").addClass("edit icon")));
+		}
+
+		if (doc.showSource) {
+			links.append($("<a/>").attr("href", doc.url).attr("title", "Document Source")
+				.append($("<i/>").addClass("linkify icon")));
+		}
+
 		var docDiv = $("<div/>").addClass("ui segment")
+			.append(links)
 			//.append($("<h1/>").addClass("ui dividing header").text(doc.title))
-			.append(marked(doc.document, { renderer: renderer }))
+			.append(this.getDoc(doc, renderer))
 			.append($("<div/>").addClass("ui hidden divider"));
 
 		this.docTarget.append(docDiv);
+	}
+
+	/**
+	 * Create a marked document within a jquery element.
+	 */
+	this.getDoc = function(doc, renderer) {
+		return $("<div/>").html(marked(doc.document, { renderer: renderer }));
 	}
 
 	/**

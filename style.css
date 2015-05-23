@@ -24,7 +24,28 @@
 }
 
 #doc {
+	position: relative;
 	min-height: 200px;
+}
+
+#doc div.ui.segemnt {
+	position: relative;
+}
+
+#doc .links {
+	position: absolute;
+	right: 0;
+	font-size: 1.4rem;
+	text-align: right;
+	cursor: pointer;
+}
+
+#doc .links a {
+	color: #e0e0e0;
+}
+
+#doc .links a:hover {
+	color: inherit;
 }
 
 #toc {

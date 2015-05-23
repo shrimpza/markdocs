@@ -26,7 +26,9 @@ Here is the content from a simple `index.json`:
       "contents": [
         {
           "url": "README.md",
-          "depth": 3
+          "depth": 3,
+          "editUrl": "https://github.com/org/repo/edit/master/README.md",
+          "showSource": true
         }
       ]
     },
@@ -69,4 +71,8 @@ Here is the content from a simple `index.json`:
  - Specify the heading level that will be linked to in the table of contents.
 - **`groups[].contents[].dataType`**
  - Optionally, if using a "proxy" service or script which requires it, specify the expected content type.
+- **`groups[].contents[].editUrl`**
+ - Optional URL linking to a page which allows users to edit this document.
+- **`groups[].contents[].showSource`**
+ - Optionally set to `true`, will provide a link to the `url` for this document, allowing users to download or view the source document.
 

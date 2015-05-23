@@ -7,7 +7,9 @@
 			"contents": [
 				{
 					"url": "README.md",
-					"depth": 3
+					"depth": 3,
+					"editUrl": "https://github.com/shrimpza/markdocs/edit/master/README.md",
+					"showSource": true
 				}
 			]
 		}	
